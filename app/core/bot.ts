@@ -5,7 +5,7 @@ import * as hears from "@app/functions/hears";
  * Start bot
  * =====================
  *
- * @contributors: Patryk Rzucidło [@ptkdev] <support@ptkdev.io> (https://ptk.dev)
+ * @contributors: Aleksey Aleshnikov
  *
  * @license: MIT License
  *

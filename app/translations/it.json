@@ -2,8 +2,8 @@
 	"contributions": {
 		"language": "Italian",
 		"license": "CC BY 4.0",
-		"contributors": ["Patryk Rzucidło [@ptkdev] <support@ptkdev.io> (https://ptk.dev)"]
+		"contributors": ["Aleksey Aleshnikov"]
 	},
-	"app_name": "node-telegram-bot-boilerplate",
+	"app_name": "service_bot",
 	"hello": "Ciao Mondo!"
 }

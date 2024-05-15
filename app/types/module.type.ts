@@ -2,7 +2,7 @@
  * Module Interface
  * =====================
  *
- * @contributors: Patryk Rzucidło [@ptkdev] <support@ptkdev.io> (https://ptk.dev)
+ * @contributors: Aleksey Aleshnikov
  *
  * @license: MIT License
  *
@@ -12,7 +12,7 @@
  * ModuleInterface
  * =====================
  *
- * @interface [ModuleInterface](https://github.com/ptkdev-boilerplate/node-telegram-bot-boilerplate/blob/main/app/types/module.type.ts)
+ * @interface [ModuleInterface](https:///blob/main/app/types/module.type.ts)
  *
  * @param { String } text - input text
  *
@@ -23,7 +23,7 @@ export interface ModuleInterface {
 	 * =====================
 	 * Set text
 	 *
-	 * @interface [ModuleInterface](https://github.com/ptkdev-boilerplate/node-telegram-bot-boilerplate/blob/main/app/types/module.type.ts)
+	 * @interface [ModuleInterface](https:///blob/main/app/types/module.type.ts)
 	 *
 	 * @param { String } text - input text
 	 *
@@ -35,7 +35,7 @@ export interface ModuleInterface {
  * ModuleResponseInterface
  * =====================
  *
- * @interface [ModuleResponseInterface](https://github.com/ptkdev-boilerplate/node-telegram-bot-boilerplate/blob/main/app/types/module.type.ts)
+ * @interface [ModuleResponseInterface](https:///blob/main/app/types/module.type.ts)
  *
  * @return {fn} string - run app() for output text
  *
@@ -46,7 +46,7 @@ export interface ModuleResponseInterface {
 	 * =====================
 	 * Get text
 	 *
-	 * @interface [ModuleResponseInterface](https://github.com/ptkdev-boilerplate/node-telegram-bot-boilerplate/blob/main/app/types/module.type.ts)
+	 * @interface [ModuleResponseInterface](https:///blob/main/app/types/module.type.ts)
 	 *
 	 * @return {fn} string - run app() for output text
 	 *
