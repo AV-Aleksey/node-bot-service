@@ -9,7 +9,10 @@
  * @license: MIT License
  *
  */
-import type { ModuleInterface, ModuleResponseInterface } from "@app/types/module.type";
+import type {
+	ModuleInterface,
+	ModuleResponseInterface,
+} from "@app/types/module.type";
 
 /**
  * Hello World
@@ -24,7 +27,9 @@ import type { ModuleInterface, ModuleResponseInterface } from "@app/types/module
  * @return {Promise<ModuleResponseInterface>} (async) app() function that return string
  *
  */
-const m = async ({ text }: ModuleInterface): Promise<ModuleResponseInterface> => {
+const m = async ({
+	text,
+}: ModuleInterface): Promise<ModuleResponseInterface> => {
 	const app = () => text;
 
 	return {

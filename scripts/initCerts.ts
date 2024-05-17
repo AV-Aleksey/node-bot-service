@@ -21,7 +21,9 @@ if (!fs.existsSync(certPaths)) {
 }
 const cn = argv._[0];
 if (!cn) {
-	console.error("No CN provided, exiting, please provide a valid CN for certs, i.e myhost.com or 126.234.243.10");
+	console.error(
+		"No CN provided, exiting, please provide a valid CN for certs, i.e myhost.com or 126.234.243.10",
+	);
 	process.exit();
 }
 console.log(`generting self-signed certs with CN ${argv._[0]}`);

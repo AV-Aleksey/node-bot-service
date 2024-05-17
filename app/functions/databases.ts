@@ -12,7 +12,13 @@ import configs from "@configs/config";
 import lowdb from "lowdb";
 import lowdbFileSync from "lowdb/adapters/FileSync";
 
-const databases = { users: lowdb(new lowdbFileSync<{ users: TelegramUserInterface[] }>(configs.databases.users)) };
+const databases = {
+	users: lowdb(
+		new lowdbFileSync<{ users: TelegramUserInterface[] }>(
+			configs.databases.users,
+		),
+	),
+};
 
 databases.users = lowdb(new lowdbFileSync(configs.databases.users));
 databases.users.defaults({ users: [] }).write();
@@ -33,7 +39,11 @@ const writeUser = async (json: TelegramUserInterface): Promise<void> => {
 	const user_id = databases.users.get("users").find({ id: json.id }).value();
 
 	if (user_id) {
-		databases.users.get("users").find({ id: user_id.id }).assign(json).write();
+		databases.users
+			.get("users")
+			.find({ id: user_id.id })
+			.assign(json)
+			.write();
 	} else {
 		databases.users.get("users").push(json).write();
 	}

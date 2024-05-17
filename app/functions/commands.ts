@@ -1,62 +1,29 @@
-/**
- * Telegraf Commands
- * =====================
- *
- * @contributors: Aleksey Aleshnikov
- *
- * @license: MIT License
- *
- */
-import bot from "@app/functions/telegraf";
-import * as databases from "@app/functions/databases";
+import { bot } from "@app/functions/telegraf";
+
 import config from "@configs/config";
+
+import { bot_config } from "@configs/bot_config";
+
 import { launchPolling, launchWebhook } from "./launcher";
 
-/**
- * command: /quit
- * =====================
- * If user exit from bot
- *
- */
-const quit = async (): Promise<void> => {
-	bot.command("quit", (ctx) => {
-		ctx.telegram.leaveChat(ctx.message.chat.id);
-		ctx.leaveChat();
-	});
-};
-
-/**
- * command: /photo
- * =====================
- * Send photo from picsum to chat
- *
- */
-const sendPhoto = async (): Promise<void> => {
-	bot.command("photo", (ctx) => {
-		ctx.replyWithPhoto("https://picsum.photos/200/300/");
-	});
-};
-
-/**
- * command: /start
- * =====================
- * Send welcome message
- *
- */
 const start = async (): Promise<void> => {
-	bot.start((ctx) => {
-		databases.writeUser(ctx.update.message.from);
+	bot.start(async (ctx) => {
+		await ctx.reply(bot_config.start.welcome_message);
 
-		ctx.telegram.sendMessage(ctx.message.chat.id, `Welcome! Try send /photo command or write any text`);
+		// if (ctx.payload === "paid") {
+		// 	await ctx.reply(
+		// 		`Тебе предстоит узнать много нового! Пользователь с id = ${ctx.from.id}`,
+		// 	);
+		//
+		// 	return ctx.scene.enter("init");
+		// }
+		//
+		// return ctx.reply("Похоже что вы еще не оплатили доступ.");
+
+		return ctx.scene.enter("init");
 	});
 };
 
-/**
- * Run bot
- * =====================
- * Send welcome message
- *
- */
 const launch = async (): Promise<void> => {
 	const mode = config.mode;
 	if (mode === "webhook") {
@@ -66,5 +33,5 @@ const launch = async (): Promise<void> => {
 	}
 };
 
-export { launch, quit, sendPhoto, start };
+export { launch, start };
 export default launch;

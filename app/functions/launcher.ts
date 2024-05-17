@@ -25,13 +25,15 @@ const launchSelfSigned = async (webhookUrl: string, secretPath: string) => {
 		key: pk,
 		cert: cert,
 	};
-	await bot.launch({
-		webhook: {
-			tlsOptions,
-			hookPath: secretPath,
-			port: port,
-		},
-	});
+	// await bot.launch({
+	// 	webhook: {
+	// 		tlsOptions,
+	// 		hookPath: secretPath,
+	// 		port: port,
+	// 	},
+	// });
+
+	await bot.launch();
 	bot.telegram.setWebhook(`${webhookUrl}${secretPath}`, {
 		certificate: {
 			source: cert,

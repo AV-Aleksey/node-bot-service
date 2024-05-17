@@ -1,16 +1,16 @@
-/**
- * Telegraf
- * =====================
- *
- * @contributors: Aleksey Aleshnikov
- *
- * @license: MIT License
- *
- */
-import { Telegraf } from "telegraf";
+import { Telegraf, Scenes, session } from "telegraf";
+
 import configs from "@configs/config";
 
-const bot = new Telegraf(configs.telegram.token);
+import { init, step_one } from "@app/scenes";
+
+const bot = new Telegraf<Scenes.WizardContext>(configs.telegram.token);
+
+const stage = new Scenes.Stage([init, step_one]);
+
+bot.use(session());
+
+bot.use(stage.middleware());
 
 export { bot };
 export default bot;
