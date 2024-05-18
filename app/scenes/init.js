@@ -1,6 +1,6 @@
 import { Markup, Scenes } from "telegraf";
 
-export const init = new Scenes.WizardScene<Scenes.WizardContext>(
+export const init = new Scenes.WizardScene(
 	"init",
 	async (ctx) => {
 		await ctx.reply("Напишите ваше имя");

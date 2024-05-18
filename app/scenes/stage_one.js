@@ -1,6 +1,6 @@
 import { Scenes } from "telegraf";
 
-export const step_one = new Scenes.WizardScene<Scenes.WizardContext>(
+export const step_one = new Scenes.WizardScene(
 	"stage_1",
 	async (ctx) => {
 		await ctx.reply("stage_1 - Step 1");

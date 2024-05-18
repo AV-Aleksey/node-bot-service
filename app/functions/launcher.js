@@ -1,22 +1,13 @@
-/**
- * Launcher
- * =====================
- *
- * @contributors: Francesco Maida [@edge33] <francescomaida91@gmail.com> (https://edge33.github.io)
- *
- * @license: MIT License
- *
- */
 import bot from "./telegraf";
 import config from "@configs/config";
 import fs from "fs";
 import localtunnel from "localtunnel";
 
-const launchPolling = (): void => {
+const launchPolling = () => {
 	bot.launch();
 };
 
-const launchSelfSigned = async (webhookUrl: string, secretPath: string) => {
+const launchSelfSigned = async (webhookUrl, secretPath) => {
 	const { port } = config.webhook;
 	const path = `${process.cwd()}/certs`;
 	const cert = fs.readFileSync(`${path}/PUBLIC.pem`);
@@ -41,7 +32,7 @@ const launchSelfSigned = async (webhookUrl: string, secretPath: string) => {
 	});
 };
 
-const launchLocalTunnel = async (secretPath: string, port: number) => {
+const launchLocalTunnel = async (secretPath, port) => {
 	const tunnel = await localtunnel({ port });
 	bot.launch({
 		webhook: {
@@ -52,7 +43,7 @@ const launchLocalTunnel = async (secretPath: string, port: number) => {
 	});
 };
 
-const launchWebhook = async (): Promise<void> => {
+const launchWebhook = async () => {
 	const { port, url, selfSigned } = config.webhook;
 	const secretPath = `/telegraf/${bot.secretPathComponent()}`;
 

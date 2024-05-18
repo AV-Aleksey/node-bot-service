@@ -1,23 +1,9 @@
-/**
- * Database: lowdb
- * =====================
- *
- * @contributors: Aleksey Aleshnikov
- *
- * @license: MIT License
- *
- */
-import type { TelegramUserInterface } from "@app/types/databases.type";
 import configs from "@configs/config";
 import lowdb from "lowdb";
 import lowdbFileSync from "lowdb/adapters/FileSync";
 
 const databases = {
-	users: lowdb(
-		new lowdbFileSync<{ users: TelegramUserInterface[] }>(
-			configs.databases.users,
-		),
-	),
+	users: lowdb(new lowdbFileSync(configs.databases.users)),
 };
 
 databases.users = lowdb(new lowdbFileSync(configs.databases.users));
@@ -35,7 +21,7 @@ databases.users.defaults({ users: [] }).write();
  * @param { TelegramUserInterface } json - telegram user object
  *
  */
-const writeUser = async (json: TelegramUserInterface): Promise<void> => {
+const writeUser = async (json) => {
 	const user_id = databases.users.get("users").find({ id: json.id }).value();
 
 	if (user_id) {

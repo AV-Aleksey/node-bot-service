@@ -1,9 +1,0 @@
-{
-	"contributions": {
-		"language": "English",
-		"license": "CC BY 4.0",
-		"contributors": ["Aleksey Aleshnikov"]
-	},
-	"app_name": "service_bot",
-	"hello": "Hello World!"
-}

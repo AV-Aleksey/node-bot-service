@@ -6,7 +6,7 @@ import { bot_config } from "@configs/bot_config";
 
 import { launchPolling, launchWebhook } from "./launcher";
 
-const start = async (): Promise<void> => {
+const start = async () => {
 	bot.start(async (ctx) => {
 		await ctx.reply(bot_config.start.welcome_message);
 
@@ -24,7 +24,7 @@ const start = async (): Promise<void> => {
 	});
 };
 
-const launch = async (): Promise<void> => {
+const launch = async () => {
 	const mode = config.mode;
 	if (mode === "webhook") {
 		launchWebhook();
