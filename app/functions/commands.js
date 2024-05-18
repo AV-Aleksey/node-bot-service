@@ -2,25 +2,31 @@ import { bot } from "@app/functions/telegraf";
 
 import config from "@configs/config";
 
-import { bot_config } from "@configs/bot_config";
+import { scenario } from "@configs/bot_config";
 
 import { launchPolling, launchWebhook } from "./launcher";
 
+import { send } from "@app/lib/send";
+
 const start = async () => {
 	bot.start(async (ctx) => {
-		await ctx.reply(bot_config.start.welcome_message);
+		if (scenario.start.init.length) {
+			for (const element of scenario.start.init) {
+				await send(ctx, element.type, element.payload, element?.extra);
+			}
+		}
 
-		// if (ctx.payload === "paid") {
-		// 	await ctx.reply(
-		// 		`Тебе предстоит узнать много нового! Пользователь с id = ${ctx.from.id}`,
-		// 	);
-		//
-		// 	return ctx.scene.enter("init");
-		// }
-		//
-		// return ctx.reply("Похоже что вы еще не оплатили доступ.");
+		if (ctx.payload !== "paid") {
+			for (const element of scenario.start.failed) {
+				await send(ctx, element.type, element.payload, element?.extra);
+			}
+		} else {
+			for (const element of scenario.start.success) {
+				await send(ctx, element.type, element.payload, element?.extra);
+			}
 
-		return ctx.scene.enter("init");
+			return ctx.scene.enter("init");
+		}
 	});
 };
 

@@ -1,5 +1,28 @@
-export const bot_config = {
+export const SEND_TYPES = {
+	message: "message",
+	photo: "photo",
+	video: "video",
+};
+
+export const scenario = {
 	start: {
-		welcome_message: "Добро пожаловать в бот сервис для образования!",
+		init: [
+			{
+				type: "message",
+				payload: "Привет тебе от бота!",
+			},
+		],
+		success: [
+			{
+				type: "message",
+				payload: "Давай знакомится!",
+			},
+		],
+		failed: [
+			{
+				type: "message",
+				payload: "Извини но похоже тебе нужно оплатить доступ :(",
+			},
+		],
 	},
 };
