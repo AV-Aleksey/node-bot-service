@@ -4,8 +4,21 @@ export const SEND_TYPES = {
 	video: "video",
 };
 
+export const STAGES = {
+	start: "start",
+	registration: "registration",
+};
+
+export const getSafeScenarioConfig = (name) => {
+	if (!scenario?.[name]) {
+		throw `Неудалось загрузить конфигурацию для ${name}, проверьте файл app/configs/bot_config.js`;
+	} else {
+		return scenario[name];
+	}
+};
+
 export const scenario = {
-	start: {
+	[STAGES.start]: {
 		init: [
 			{
 				type: "message",
@@ -22,6 +35,28 @@ export const scenario = {
 			{
 				type: "message",
 				payload: "Извини но похоже тебе нужно оплатить доступ :(",
+			},
+		],
+	},
+	[STAGES.registration]: {
+		init: [
+			{
+				type: "message",
+				payload: "Заполни инфу о себе)",
+			},
+		],
+		questions: [
+			{
+				key: "name",
+				type: "message",
+				text: "Как тебя зовут ?",
+				confirm: true,
+			},
+			{
+				key: "age",
+				type: "message",
+				text: "Какой возраст ?",
+				confirm: true,
 			},
 		],
 	},
