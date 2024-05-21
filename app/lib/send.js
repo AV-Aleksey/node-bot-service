@@ -1,4 +1,4 @@
-import { SEND_TYPES } from "@configs/bot_config";
+import { SEND_TYPES } from "@configs/scenario";
 
 export const send = async (ctx, type, payload, extra = {}) => {
 	if (type === SEND_TYPES.message) {

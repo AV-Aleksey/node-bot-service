@@ -1,94 +1,131 @@
 import { Scenes } from "telegraf";
 
-import { getSafeScenarioConfig, STAGES } from "@configs/bot_config";
+import { STAGES, getSafeScenarioConfig } from "@configs/scenario";
 
 import { send } from "@app/lib/send";
 
 import { createWizardQuestion } from "@app/scenes/lib/createWizardQuestion";
 
+import { objToStringF } from "@app/lib/objToStringF";
+
+import { removeButtons } from "@app/scenes/lib/removeButtons";
+
 const config = getSafeScenarioConfig(STAGES.registration);
 
-export const registration = new Scenes.WizardScene(
-	STAGES.registration,
-	async (ctx) => {
-		for (const element of config?.init) {
-			await send(ctx, element.type, element.payload);
-		}
+const stepInit = async (ctx) => {
+	for (const element of config?.init) {
+		await send(ctx, element.type, element.payload);
+	}
 
-		const firstQuestion = config.questions?.[0];
+	const firstQuestion = config.questions?.[0];
 
-		await send(ctx, firstQuestion.type, firstQuestion.text);
+	await send(ctx, firstQuestion.type, firstQuestion.text);
 
-		return ctx.wizard.next();
-	},
-	...config.questions.slice(1).map((question, index) => {
-		return async (ctx) => {
-			await send(ctx, question.type, question.text);
+	return ctx.wizard.next();
+};
 
-			const key = config.questions?.[index]?.key;
+const stepQuestions = config.questions.slice(1).map((question, index) => {
+	return async (ctx) => {
+		await send(ctx, question.type, question.text);
 
-			if (typeof key === "string" && "text" in ctx.message) {
-				ctx.wizard.state[key] = ctx.message.text;
-			}
+		const key = config.questions?.[index]?.key;
 
-			ctx.wizard.next();
-		};
-	}),
-	async (ctx) => {
-		const key = config.questions.at(-1)?.key;
-
-		if (typeof key === "string" && "text" in ctx.message) {
+		if (typeof key === "string" && ctx.message?.text) {
 			ctx.wizard.state[key] = ctx.message.text;
 		}
 
-		const shouldConfirm = config.questions.some(
-			(item) => item.confirm === true,
-		);
+		ctx.wizard.next();
+	};
+});
 
-		const params = shouldConfirm
-			? {
+const stepConfirm = config.settings.confirm
+	? [
+			async (ctx) => {
+				const key = config.questions.at(-1)?.key;
+
+				if (typeof key === "string" && ctx.message?.text) {
+					ctx.wizard.state[key] = ctx.message.text;
+				}
+
+				await createWizardQuestion(ctx, {
 					question: {
-						text: "Отлично! Теперь давай сверим данные :)",
+						text: config.confirm.confirm_question_text,
 					},
-					answers: [{ text: "Давай сверим", data: "confirm" }],
-			  }
-			: {
+					answers: [
+						{
+							text: config.confirm.confirm_question_button_text,
+							data: "confirm",
+						},
+					],
+				});
+
+				ctx.wizard.next();
+			},
+			async (ctx) => {
+				await removeButtons(ctx);
+
+				await createWizardQuestion(ctx, {
 					question: {
-						text: "Отлично! Можем идти дальше! Готов?",
+						text: objToStringF(
+							ctx.wizard.state,
+							config.confirm.confirm_show_data_text,
+						),
 					},
-					answers: [{ text: "Всегда готов!", data: "next" }],
-			  };
+					answers: [
+						{
+							text: config.confirm.confirm_ok_button_text,
+							data: "success",
+						},
+						{
+							text: config.confirm.confirm_cancel_button_text,
+							data: "refused",
+						},
+					],
+				});
 
-		await createWizardQuestion(ctx, params);
-	},
-	async (ctx) => {
-		if (ctx.callbackQuery?.data === "confirm") {
-			const formattedString = Object.entries(ctx.wizard.state)
-				.map(([key, value]) => `${key}: ${value}`)
-				.join("\n");
+				ctx.wizard.next();
+			},
+	  ]
+	: [
+			async (ctx) => {
+				const key = config.questions.at(-1)?.key;
 
-			await createWizardQuestion(ctx, {
-				question: {
-					text: `
-					Верно ли введены данные ?
-					${formattedString}
-					`,
-				},
-				answers: [
-					{ text: "Подтвердить", data: "success" },
-					{ text: "Изменить", data: "refused" },
-				],
-			});
-		}
-	},
-	async (ctx) => {
-		if (ctx.callbackQuery?.data === "refused") {
-			await ctx.scene.leave();
-			await ctx.scene.enter(STAGES.registration);
-		} else {
-			await ctx.reply("Сохранение данных...");
+				if (typeof key === "string" && ctx.message?.text) {
+					ctx.wizard.state[key] = ctx.message.text;
+				}
 
-			return await ctx.scene.leave();
-		}
-	},
+				await createWizardQuestion(ctx, {
+					question: {
+						text: config.confirm.confirm_success_text,
+					},
+					answers: [
+						{
+							text: config.confirm.confirm_success_ok_button,
+							data: "success",
+						},
+					],
+				});
+
+				ctx.wizard.next();
+			},
+	  ];
+
+const stepFinish = async (ctx) => {
+	await removeButtons(ctx);
+
+	if (ctx.callbackQuery?.data === "refused") {
+		await ctx.scene.leave();
+		return ctx.scene.enter(STAGES.registration);
+	}
+
+	await ctx.reply("Сохранение данных...");
+	return ctx.scene.leave();
+};
+
+export const registration = new Scenes.WizardScene(
+	STAGES.registration,
+	stepInit,
+	...stepQuestions,
+	...stepConfirm,
+	stepFinish,
 );

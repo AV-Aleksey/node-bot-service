@@ -1,3 +1,5 @@
+export { getSafeScenarioConfig } from "./lib/getSafeScenarioConfig";
+
 export const SEND_TYPES = {
 	message: "message",
 	photo: "photo",
@@ -7,14 +9,6 @@ export const SEND_TYPES = {
 export const STAGES = {
 	start: "start",
 	registration: "registration",
-};
-
-export const getSafeScenarioConfig = (name) => {
-	if (!scenario?.[name]) {
-		throw `Неудалось загрузить конфигурацию для ${name}, проверьте файл app/configs/bot_config.js`;
-	} else {
-		return scenario[name];
-	}
 };
 
 export const scenario = {
@@ -50,14 +44,21 @@ export const scenario = {
 				key: "name",
 				type: "message",
 				text: "Как тебя зовут ?",
-				confirm: true,
 			},
 			{
 				key: "age",
 				type: "message",
 				text: "Какой возраст ?",
-				confirm: true,
 			},
 		],
+		confirm: {
+			confirm_question_text: "Отлично! Теперь давай сверим данные",
+			confirm_question_button_text: "Давай сверим",
+			confirm_ok_button_text: "Подтвердить",
+			confirm_cancel_button_text: "Изменить",
+		},
+		settings: {
+			confirm: false,
+		},
 	},
 };

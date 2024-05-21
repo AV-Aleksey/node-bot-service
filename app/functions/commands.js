@@ -2,7 +2,7 @@ import { bot } from "@app/functions/telegraf";
 
 import config from "@configs/config";
 
-import { getSafeScenarioConfig, scenario, STAGES } from "@configs/bot_config";
+import { getSafeScenarioConfig, scenario, STAGES } from "@configs/scenario";
 
 import { launchPolling, launchWebhook } from "./launcher";
 

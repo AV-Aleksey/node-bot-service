@@ -1,7 +1,9 @@
 import { Markup } from "telegraf";
 
-export const createWizardQuestion = async (ctx, params, runNext = true) => {
+export const createWizardQuestion = async (ctx, params) => {
 	const { question, answers } = params;
+
+	console.log(params);
 
 	await ctx.reply(
 		question.text,
@@ -9,8 +11,4 @@ export const createWizardQuestion = async (ctx, params, runNext = true) => {
 			answers.map((data) => Markup.button.callback(data.text, data.data)),
 		),
 	);
-
-	if (runNext) {
-		return ctx.wizard.next();
-	}
 };
