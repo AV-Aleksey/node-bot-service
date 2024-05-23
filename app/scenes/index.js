@@ -2,6 +2,8 @@ import { Scenes } from "telegraf";
 
 import { registration } from "./registration";
 
-import { step_one } from "./stage_one";
+import { verification } from "@app/scenes/verification";
 
-export const stages = new Scenes.Stage([registration, step_one]);
+const scenes = [registration, verification];
+
+export const stages = new Scenes.Stage(scenes);

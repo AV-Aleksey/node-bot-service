@@ -9,6 +9,7 @@ export const SEND_TYPES = {
 export const STAGES = {
 	start: "start",
 	registration: "registration",
+	verification: "verification",
 };
 
 export const scenario = {
@@ -58,7 +59,7 @@ export const scenario = {
 			confirm_cancel_button_text: "Изменить",
 		},
 		settings: {
-			confirm: false,
+			confirm: true,
 		},
 	},
 };

@@ -3,8 +3,6 @@ import { Markup } from "telegraf";
 export const createWizardQuestion = async (ctx, params) => {
 	const { question, answers } = params;
 
-	console.log(params);
-
 	await ctx.reply(
 		question.text,
 		Markup.inlineKeyboard(

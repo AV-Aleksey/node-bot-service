@@ -13,6 +13,7 @@ import { removeButtons } from "@app/scenes/lib/removeButtons";
 const config = getSafeScenarioConfig(STAGES.registration);
 
 const stepInit = async (ctx) => {
+	console.log(ctx.state);
 	for (const element of config?.init) {
 		await send(ctx, element.type, element.payload);
 	}
@@ -115,11 +116,13 @@ const stepFinish = async (ctx) => {
 
 	if (ctx.callbackQuery?.data === "refused") {
 		await ctx.scene.leave();
+
 		return ctx.scene.enter(STAGES.registration);
 	}
 
-	await ctx.reply("Сохранение данных...");
-	return ctx.scene.leave();
+	await ctx.scene.leave();
+
+	return ctx.scene.enter(STAGES.verification, { payload: ctx.wizard.state });
 };
 
 export const registration = new Scenes.WizardScene(
