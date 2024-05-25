@@ -1,8 +1,10 @@
 import { Markup } from "telegraf";
 
-export const removeButtons = (ctx) => {
+export const removeButtons = async (ctx) => {
 	try {
-		return ctx.editMessageReplyMarkup(Markup.inlineKeyboard([]));
+		const keyboard = Markup.inlineKeyboard([]);
+
+		await ctx?.editMessageReplyMarkup(keyboard);
 	} catch (e) {
 		console.log("неудалось удалить кнопки", e);
 	}

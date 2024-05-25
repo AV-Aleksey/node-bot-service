@@ -62,4 +62,8 @@ export const scenario = {
 			confirm: true,
 		},
 	},
+	[STAGES.verification]: {
+		verification_text:
+			"Присылай свою электронную почту, на которую был сделан заказ, — найду тебя в своей базе",
+	},
 };

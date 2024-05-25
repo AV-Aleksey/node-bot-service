@@ -13,7 +13,6 @@ import { removeButtons } from "@app/scenes/lib/removeButtons";
 const config = getSafeScenarioConfig(STAGES.registration);
 
 const stepInit = async (ctx) => {
-	console.log(ctx.state);
 	for (const element of config?.init) {
 		await send(ctx, element.type, element.payload);
 	}

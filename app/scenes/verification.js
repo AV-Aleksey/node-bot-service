@@ -1,8 +1,10 @@
 import { Scenes } from "telegraf";
+
 import { STAGES } from "@configs/scenario";
-import { createWizardQuestion } from "@app/scenes/lib/createWizardQuestion";
-import { objToStringF } from "@app/lib/objToStringF";
+
 import { removeButtons } from "@app/scenes/lib/removeButtons";
+
+import { baseConfirm } from "@app/scenes/components/baseConfirm";
 
 const stepInit = async (ctx) => {
 	await ctx.reply(
@@ -11,35 +13,10 @@ const stepInit = async (ctx) => {
 	ctx.wizard.next();
 };
 
-const stepConfirm = async (ctx) => {
-	ctx.wizard.state["email"] = ctx.message?.text;
-
-	const message = objToStringF(
-		{ email: ctx.message?.text },
-		"Проверь, все ли верно?",
-	);
-
-	await createWizardQuestion(ctx, {
-		question: { text: message },
-		answers: [
-			{
-				text: "Все в порядке",
-				data: "success",
-			},
-			{
-				text: "Изменить",
-				data: "refused",
-			},
-		],
-	});
-
-	ctx.wizard.next();
-};
+const stepConfirm = baseConfirm("Проверь, все ли верно?", "email");
 
 const stepFinish = async (ctx) => {
 	await removeButtons(ctx);
-
-	const success = true;
 
 	if (ctx.callbackQuery?.data === "refused") {
 		await ctx.scene.leave();
@@ -49,17 +26,26 @@ const stepFinish = async (ctx) => {
 		});
 	}
 
-	if (success) {
-		const payload = {
-			id: 1,
-			...ctx.wizard.state?.payload,
-			email: ctx.wizard.state?.email,
-		};
+	try {
+		/* Тут вызываем запрос к базе данных*/
+		const success = true;
 
-		await ctx.reply("Отлично! Все получилось, приступаем к стажировке.");
+		if (success) {
+			const payload = {
+				id: ctx.from.id,
+				...ctx.wizard.state?.payload,
+				email: ctx.wizard.state?.email,
+			};
 
-		return ctx.scene.leave();
-	} else {
+			console.log("query to db", payload);
+
+			await ctx.reply(
+				"Отлично! Все получилось, приступаем к стажировке.",
+			);
+
+			return ctx.scene.leave();
+		}
+	} catch (e) {
 		await ctx.reply("Что-то не вижу твой e-mail в базе 🙁");
 
 		await ctx.scene.leave();

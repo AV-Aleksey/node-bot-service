@@ -7,6 +7,7 @@ import { getSafeScenarioConfig, scenario, STAGES } from "@configs/scenario";
 import { launchPolling, launchWebhook } from "./launcher";
 
 import { send } from "@app/lib/send";
+import { scenes } from "@app/scenes";
 
 const start = async () => {
 	const config = getSafeScenarioConfig(STAGES.start);
@@ -27,7 +28,7 @@ const start = async () => {
 				await send(ctx, element.type, element.payload, element?.extra);
 			}
 
-			return ctx.scene.enter(STAGES.registration);
+			return ctx.scene.enter(scenes[0].id);
 		}
 	});
 };
