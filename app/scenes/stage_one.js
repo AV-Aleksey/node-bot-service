@@ -1,25 +1,32 @@
 import { Scenes } from "telegraf";
+import { getMinioFileUrl } from "@configs/minio";
+import path from "path";
+import { downloadFile } from "@configs/axios";
+import fs from "fs";
 
 export const step_one = new Scenes.WizardScene(
 	"stage_1",
 	async (ctx) => {
-		await ctx.reply("Привет! Начнем наше обучение!");
+		// "Тут нужно забрать файл из видео о отправить в кружочке"
 
-		ctx.wizard.state.timeoutId = setTimeout(() => {
-			ctx.reply("Извините но время вышло :(");
-			ctx.scene.leave();
-			ctx.scene.enter("stage_1");
-		}, 1000000);
+		const url = await getMinioFileUrl(
+			"aleksey",
+			"IMG_5343 (video-converter.com).mp4",
+		);
+
+		const downloadPath = path.join(
+			__dirname,
+			"IMG_5343 (video-converter.com).mp4",
+		);
+
+		await downloadFile(url, downloadPath);
+
+		await ctx.sendVideoNote({ source: fs.createReadStream(downloadPath) });
 
 		return ctx.wizard.next();
 	},
 	async (ctx) => {
-		await ctx.reply("stage_1 - Step 3");
-
-		return ctx.wizard.next();
-	},
-	async (ctx) => {
-		await ctx.reply("stage_1 - Done");
+		await ctx.reply("Готово!");
 
 		return await ctx.scene.leave();
 	},
