@@ -11,9 +11,6 @@ const minioConfig = {
 export const minioClient = new Minio.Client(minioConfig);
 
 export async function getMinioFileUrl(bucketName, objectName) {
-	// const bucketName = "your_bucket_name";
-	// const objectName = "your_video_file.mp4";
-
 	try {
 		const url = await minioClient.presignedGetObject(
 			bucketName,
