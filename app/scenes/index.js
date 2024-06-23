@@ -8,4 +8,4 @@ import { stage } from "@app/scenes/stage";
 // const scenes = [registration, verification];
 export const scenes = [registration];
 
-export const stages = new Scenes.Stage(registration);
+export const stages = new Scenes.Stage(scenes);

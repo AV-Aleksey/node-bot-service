@@ -1,13 +1,3 @@
-/**
- * Check configs.js
- * =====================
- * Check if configs/config.js exist, if don't exist rename .tpl
- *
- * @contributors: Aleksey Aleshnikov
- *
- * @license: MIT License
- *
- */
 import * as fs from "fs";
 import * as shell from "shelljs";
 

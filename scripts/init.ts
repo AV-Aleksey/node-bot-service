@@ -1,13 +1,3 @@
-/**
- * Init
- * =====================
- * Configure telegram token and username
- *
- * @contributors: Aleksey Aleshnikov
- *
- * @license: MIT License
- *
- */
 import * as fs from "fs";
 import * as shell from "shelljs";
 import { argv } from "yargs";

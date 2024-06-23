@@ -32,7 +32,7 @@
 		"start-pm2": "pm2 start .pm2-process.json",
 		"start-docker": "pm2-runtime .pm2-docker.json",
 		"stop-pm2": "pm2 stop .pm2-process.json",
-		"dev": "ts-node scripts/configs.ts && ts-node scripts/debug.ts --enable && ts-node scripts/rmdist.ts && nodemon --exec 'ts-node --compiler typescript app/core/bot.js'",
+		"dev": "ts-node scripts/configs.ts --enable && ts-node scripts/rmdist.ts && nodemon --exec 'ts-node --compiler typescript app/core/bot.js'",
 		"build": "tsc",
 		"release": "ts-node scripts/configs.ts && ts-node scripts/debug.ts --disable && npm run build && tsc --declaration --emitDeclarationOnly",
 		"test": "jest app",

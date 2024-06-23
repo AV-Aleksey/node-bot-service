@@ -1,12 +1,3 @@
-/**
- * Delete dist folder
- * =====================
- *
- * @contributors: Aleksey Aleshnikov
- *
- * @license: MIT License
- *
- */
 import * as shell from "shelljs";
 declare const __dirname: string;
 
